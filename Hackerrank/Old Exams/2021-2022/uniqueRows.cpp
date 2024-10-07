@@ -1,46 +1,34 @@
 #include <cmath>
 #include <cstdio>
 #include <vector>
+#include <string>
 #include <iostream>
 #include <algorithm>
+#include <unordered_map>
 using namespace std;
-
-bool areEqualRows(int* arr1, int* arr2, int size) {  
-    for(int i = 0; i < size; i++) {
-        if(arr1[i] != arr2[i]) {
-            return false;
-        }
-    }
-    
-    return true;
-}
 
 int main() {
     int N, M;
     cin >> N >> M;
     
-    int arr[N][M];
+    cin.ignore();
+    
+    unordered_map<string, int> rows;
     
     for(int i = 0; i < N; i++) {
-        for(int j = 0; j < M; j++) {
-            cin >> arr[i][j];
-        }
+        char buff[M*2];    
+        cin.getline(buff, M*2);
+        
+        string row(buff);
+        rows[row]++;
     }
     
     int counter = 0;
-    for(int i = 0; i < N; i++) {
-        bool hasEqual = false;
-        for(int j = 0; j < N; j++) {
-            if(j != i && areEqualRows(arr[i], arr[j], M)) {
-               hasEqual  = true;
-               break;
-            }
-        }
-        
-        if(!hasEqual) {
+    for(const auto& row : rows) {
+        if(row.second == 1) {
             counter++;
         }
-    }  
+    }
     
     cout << counter;
     
