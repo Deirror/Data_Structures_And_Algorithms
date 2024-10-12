@@ -5,12 +5,11 @@ int upper_bound(int arr[], int N, int X)
 
     while (low < high) {
         int mid = low + (high - low) / 2;
-
-        if (X >= arr[mid]) {
-            low = mid + 1;
+        if (X < arr[mid]) {
+            high = mid;
         }
         else {
-            high = mid;
+            low = mid + 1;
         }
     }
    
