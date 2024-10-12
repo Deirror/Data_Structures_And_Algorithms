@@ -11,10 +11,6 @@ int lower_bound(int arr[], int N, int X) {
             low = mid + 1;
         }
     }
-   
-    if(low < N && arr[low] < X) {
-       low++;
-    }
-
+    
     return low;
 }
