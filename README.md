@@ -7,4 +7,4 @@ Using HackerRank, LeetCode and other websites to learn additionally
 Cool resources, info:
 -
 
-[Cool Lectures for DSA in Bulgarian](https://www.informatika.bg/lectures/all)
+- [Cool Lectures for DSA in Bulgarian](https://www.informatika.bg/lectures/all)
