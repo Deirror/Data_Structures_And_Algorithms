@@ -5,14 +5,14 @@
 #include <algorithm>
 using namespace std;
 
-bool my_binary_search(int* arr, int n, int searched, int excluded_idx) {
+bool my_binary_search(int* arr, int n, int searched) {
     int left = 0;
     int right = n - 1;
     
     while(left <= right) {
         int mid = left + (right - left) / 2;
         
-        if(arr[mid] == searched && mid != excluded_idx) {
+        if(arr[mid] == searched) {
             return true;
         } else if (arr[mid] < searched) {
             left = mid + 1;
@@ -38,7 +38,7 @@ int main() {
     
     int count = 0;
     for(int i = 0; i < n; i++) {
-        if(my_binary_search(arr, n, abs(arr[i] - d), i)) {
+        if(my_binary_search(arr, n, (arr[i] - d))) {
             count++;
         }
     }
