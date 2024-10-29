@@ -1,5 +1,3 @@
-#include <iostream>
-
 template <class T>
 struct Node {
 	T m_Value;
@@ -32,7 +30,7 @@ struct LinkedList {
 		return *this;
 	}
 
-	LinkedList(LinkedList<T>&& other) noexcept{
+	LinkedList(LinkedList<T>&& other) noexcept {
 		move_from(std::move(other));
 	}
 
@@ -61,9 +59,11 @@ struct LinkedList {
 	void insert(size_t idx, const T& value) {
 		if (!idx) {
 			push_front(value);
-		} else if(!m_Head && !m_Tail){
+		}
+		else if (!m_Head && !m_Tail) {
 			return;
-		} else {
+		}
+		else {
 			Node<T>* prev = nullptr;
 			Node<T>* curr = m_Head;
 
@@ -77,6 +77,10 @@ struct LinkedList {
 
 			Node<T>* node = new Node<T>(value, curr);
 			prev->m_Next = node;
+
+			if (prev == m_Tail) {
+				m_Tail = node;
+			}
 		}
 	}
 
@@ -84,7 +88,8 @@ struct LinkedList {
 		Node<T>* node = new Node<T>(value);
 		if (!m_Head && !m_Tail) {
 			m_Tail = m_Head = node;
-		} else {
+		}
+		else {
 			m_Tail->m_Next = node;
 			m_Tail = node;
 		}
@@ -101,6 +106,35 @@ struct LinkedList {
 
 		if (!m_Head) {
 			m_Tail = nullptr;
+		}
+	}
+
+	void remove(size_t idx) {
+		if (!idx) {
+			pop_front();
+		}
+		else if (!m_Head && !m_Tail) {
+			return;
+		}
+		else {
+			Node<T>* prev = nullptr;
+			Node<T>* curr = m_Head;
+
+			for (size_t i = 0; i < idx; i++) {
+				if (!curr) {
+					return;
+				}
+				prev = curr;
+				curr = curr->m_Next;
+			}
+
+			prev->m_Next = curr->m_Next;
+
+			if (curr == m_Tail) {
+				m_Tail = prev;
+			}
+
+			delete curr;
 		}
 	}
 
