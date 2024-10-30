@@ -68,11 +68,14 @@ struct LinkedList {
 			Node<T>* curr = m_Head;
 
 			for (size_t i = 0; i < idx; i++) {
-				if (!curr) {
-					return;
-				}
 				prev = curr;
 				curr = curr->m_Next;
+				if (!curr) {
+					if (i + 1 == idx) {
+						push_back(value);
+					}
+					return;
+				}
 			}
 
 			Node<T>* node = new Node<T>(value, curr);
@@ -121,11 +124,11 @@ struct LinkedList {
 			Node<T>* curr = m_Head;
 
 			for (size_t i = 0; i < idx; i++) {
+				prev = curr;
+				curr = curr->m_Next;
 				if (!curr) {
 					return;
 				}
-				prev = curr;
-				curr = curr->m_Next;
 			}
 
 			prev->m_Next = curr->m_Next;
