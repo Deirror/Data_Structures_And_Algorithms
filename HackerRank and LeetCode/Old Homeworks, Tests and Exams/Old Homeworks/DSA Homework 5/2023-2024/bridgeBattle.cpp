@@ -6,32 +6,29 @@
 #include <algorithm>
 using namespace std;
 
-
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
     int n;
     cin >> n;   
     
-    vector<deque<int>> groups(n);  
-    vector<int> nums(n);
+    vector<deque<int>> groups;
+    deque<int> temp;
+    bool prev = false;
     for(int i = 0; i < n; i++) {
-        cin >> nums[i];
-    }
-    
-    bool prev = nums[0] > 0;
-    int idx = 0;
-    int size = 1;
-    for(auto num : nums) {
+        int num;
+        cin >> num;
         bool flag = num > 0;
+        if(!i) prev = flag;
         if(flag != prev) {
-            idx++;
-            size++;
+            groups.push_back(temp);
+            temp.clear();
         }
-        groups[idx].push_back(num);
+        temp.push_back(num);
         prev = flag;
     }
+    groups.push_back(temp);
     
-    for(int i = 0; i < size - 1; i++) {
+    for(int i = 0; i < groups.size() - 1; i++) {
         if(groups[i].back() > 0 && groups[i + 1].front() < 0) {
             while(groups[i].size() && groups[i + 1].size()) {
               if(groups[i].back() == groups[i + 1].front() * (-1)) {
@@ -47,9 +44,9 @@ int main() {
     }
     
     bool flag = false;
-    for(int i = 0; i < size; i++) {
+    for(int i = 0; i < groups.size(); i++) {
         while(groups[i].size()) {
-            cout << groups[i].back() << ' ';
+            cout << groups[i].front() << ' ';
             groups[i].pop_front();
             flag = true;
         }
