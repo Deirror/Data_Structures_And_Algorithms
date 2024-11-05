@@ -32,14 +32,14 @@ int main() {
     }
     
     for(int i = 0; i < size - 1; i++) {
-        if(groups[i].front() > 0 && groups[i + 1].front() < 0) {
+        if(groups[i].back() > 0 && groups[i + 1].front() < 0) {
             while(groups[i].size() && groups[i + 1].size()) {
-              if(groups[i].front() == groups[i + 1].back() * (-1)) {
+              if(groups[i].back() == groups[i + 1].front() * (-1)) {
                   groups[i].pop_back();
                   groups[i+1].pop_front();
-              } else if(groups[i].front() > groups[i + 1].back() * (-1)){
+              } else if(groups[i].back() > groups[i + 1].front() * (-1)){
                   groups[i+1].pop_front();
-              } else {
+              } else if(groups[i].back() < groups[i + 1].front() * (-1)){
                   groups[i].pop_back();
               }
             }      
