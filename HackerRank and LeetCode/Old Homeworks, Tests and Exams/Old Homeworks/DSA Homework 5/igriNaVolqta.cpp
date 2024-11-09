@@ -1,40 +1,44 @@
-#include <cmath>
-#include <stack>
-#include <cstdio>
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <queue>
+#include <stack>
 using namespace std;
 
+int eliminations[1000000];
 
-int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
-    int n;
-    cin >> n;
-    int arr[n];
-    for(int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }   
-    //
-        int days = 0;
-        stack<int> st;     
-        for(int i = 0; i < n; i++) {
-            int counter = 0;
-            int minCounter = 0;
-            while(st.size() && arr[st.top()] < arr[i] && i < n) {          
-                if(arr[i] < arr[i - 1]) {
-                     minCounter++;
-                }       
-                counter++;
-                i++;
-            }
-            if(counter > 0) {
-                if(counter == minCounter == 1) minCounter = 0;
-                days = max(days, counter - (counter - minCounter) + 1);
-            }
-            st.push(i);      
-        }        
-    //
-    cout << days;
-    return 0;
+int main() 
+{
+    int  N;
+    cin >> N;
+    vector<int> players;
+    
+    for(int i = 0; i < N; i++) 
+    {
+        int number;
+        cin>>number;
+        players.push_back(number);
+    }
+    
+    stack<int> s;
+    int max = 0;   
+    int counter = 0;  
+    
+    for(int i = N-1; i>=0; i--) 
+    {      
+        while(!s.empty() && players[i] < players[s.top()]) 
+        {   
+            eliminations[i] = std::max(eliminations[i]+1, eliminations[s.top()]);
+            s.pop();
+        }   
+
+        
+        s.push(i);     
+        if (max <= eliminations[i]) 
+        {
+            max = eliminations[i];            
+        }               
+    }
+    
+    cout<<max<<endl;
 }
