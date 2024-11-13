@@ -14,25 +14,41 @@ public:
 /*
 Plan -> get max in left bt, get min in right bt and check order
 */
-    int getMaxLeft(TreeNode* root) {
+    void getMaxLeft(TreeNode* root, optional<int>& maxVal) {
         if(!root) {
-            return INT_MIN;
+            return;
         }
-        return max(max(getMaxLeft(root->left), root->val), getMaxLeft(root->right));
+        if(!maxVal.has_value()) {
+            maxVal = root->val;
+        } else {
+            maxVal = max(*maxVal, root->val);
+        }
+        getMaxLeft(root->left, maxVal);
+        getMaxLeft(root->right, maxVal);
     }
 
-    int getMinRight(TreeNode* root) {
+    void getMinRight(TreeNode* root, optional<int>& minVal) {
         if(!root) {
-            return INT_MAX;
+            return;
         }
-        return min(min(getMinRight(root->left), root->val), getMinRight(root->right));
+        if(!minVal.has_value()) {
+            minVal = root->val;
+        } else {
+            minVal = min(*minVal, root->val);
+        }
+        getMinRight(root->left, minVal);
+        getMinRight(root->right, minVal);
     }
 
     bool isValidBST(TreeNode* root) {
         if(!root || (!root->right && !root->left)) {
             return true;
         }
-        if(getMaxLeft(root->left) >= root->val || getMinRight(root->right) <= root->val) {
+        optional<int> minVal;
+        optional<int> maxVal;
+        getMaxLeft(root->left, maxVal);
+        getMinRight(root->right, minVal);
+        if((maxVal.has_value() && maxVal >= root->val) || (minVal.has_value() && minVal <= root->val)) {
             return false;
         }
         return isValidBST(root->left) && isValidBST(root->right);
