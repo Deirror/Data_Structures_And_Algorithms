@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <stack>
 
 struct TreeNode {
 	int data;
@@ -59,8 +60,26 @@ public:
 		*curr = new TreeNode(data); 
 	}
 
+	//recursive dfs
 	void inorderTraversal() const {
 		_inorderTraversal(this->root);
+	}
+
+	//iterative dfs
+	void iterativeDFS() const {
+		std::stack<TreeNode*> st;
+		TreeNode* curr = root;
+		while (curr || st.size()) {
+			while (curr) {
+				st.push(curr);
+				curr = curr->left;
+			}
+			curr = st.top();
+			st.pop();
+			std::cout << curr->data << " ";
+			curr = curr->right;
+		}
+		
 	}
 
 	void levelOrderTraversal() const {
@@ -122,6 +141,8 @@ public:
 		}
 		delete to_remove;
 	}
+
+
 };
 
 int main() {
@@ -138,8 +159,8 @@ int main() {
 	bts.remove(0);
 	bts.remove(1);
 
-	//bts.inorderTraversal();
-	bts.levelOrderTraversal();
+	bts.iterativeDFS();
+	//bts.levelOrderTraversal();
 
 	return 0;
 }
