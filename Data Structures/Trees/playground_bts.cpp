@@ -142,6 +142,44 @@ public:
 		delete to_remove;
 	}
 
+	void postorderBFS() const {
+		std::deque<std::pair<TreeNode*, int>> dq;
+		dq.push_back({ root, 0 });
+		while (dq.size()) {
+			std::pair<TreeNode*, int> temp;
+			if (dq.back().second == dq.front().second && dq.back().second % 2 == 0) {
+				temp = dq.back();
+			}
+			else if (dq.back().second == dq.front().second && dq.back().second % 2 == 1) {
+				temp = dq.front();
+			} 
+			else
+			{
+				temp = (dq.back().second < dq.front().second) ? dq.back() : dq.front();
+			}
+
+			if (temp.second % 2 == 0) {
+				dq.pop_back();
+				std::cout << temp.first->data << ' ';
+				if (temp.first->right) {
+					dq.push_front({ temp.first->right , temp.second + 1});
+				} 
+				if (temp.first->left) {
+					dq.push_front({ temp.first->left , temp.second + 1 });
+				}
+			}
+			else {
+				dq.pop_front();
+				std::cout << temp.first->data << ' ';
+				if (temp.first->left) {
+					dq.push_back({ temp.first->left , temp.second + 1 });
+				}
+				if (temp.first->right) {
+					dq.push_back({ temp.first->right , temp.second + 1 });
+				}
+			}
+		}
+	}
 
 };
 
