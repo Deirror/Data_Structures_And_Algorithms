@@ -1,7 +1,6 @@
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        vector<int> dp(nums.size() + 1);
         int prev1 = 0;
         int prev2 = 0;
         for(auto num : nums) {
