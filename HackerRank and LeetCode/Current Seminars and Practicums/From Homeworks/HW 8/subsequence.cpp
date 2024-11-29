@@ -7,8 +7,6 @@
 #include <set>
 using namespace std;
 
-// hamalene
-
 int main() 
 {  
     ios_base::sync_with_stdio(false);
@@ -18,13 +16,12 @@ int main()
     vector<int> v2;
     
     int N=0, M = 0;
-    cin>>N>>M;
+    cin >> N >> M;
     
     for(int i = 0; i < M; i++)
     {
         int num = 0;
-        cin>>num;
-        
+        cin>>num;    
         v1.push_back(num);
     }
     
