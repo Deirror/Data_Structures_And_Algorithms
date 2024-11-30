@@ -8,8 +8,10 @@ public:
         }
         int res = 0;
         unordered_map<int, int> um;
-        um[0] = 1;
         for(int i = 0; i < nums.size(); i++) {
+            if(prefix[i] == k) {
+                res++;
+            }
             if(um.find(prefix[i] - k) != um.end()) {
                 res += um[prefix[i] - k];
             }
