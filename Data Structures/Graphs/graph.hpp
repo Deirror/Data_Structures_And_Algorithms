@@ -14,6 +14,8 @@ class graph : public graph_base<T> {
 public:
 	graph() = default;
 
+	//matrix, list adj
+
 	graph(const vector<pair<T, T>>& edges) {
 		for (const auto& edge : edges) {
 			add(edge);
@@ -23,6 +25,19 @@ public:
 	void add(const pair<T, T>& edge) override {
 		edgeList[edge.first].insert(edge.second);
 		edgeList[edge.second].insert(edge.first);
+	}
+
+	void add(const T& vertex) override{
+		edgeList[vertex];
+	}
+
+	void remove(const pair<T, T>& edge) override {
+		if (edgeList.find(edge.first) == edgeList.end() ||
+			edgeList.find(edge.second) == edgeList.end()) {
+			return;
+		}
+		edgeList[edge.second].erase(edge.first);
+		edgeList[edge.first].erase(edge.second);
 	}
 
 	void remove(const T& vertex) override {
