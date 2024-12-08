@@ -14,11 +14,27 @@ class graph : public graph_base<T> {
 public:
 	graph() = default;
 
-	//matrix, list adj
-
 	graph(const vector<pair<T, T>>& edges) {
 		for (const auto& edge : edges) {
 			add(edge);
+		}
+	}
+
+	graph(const vector<vector<T>>& adjacencyMatrix, const vector<T>& values) {
+		size_t n = adjacencyMatrix.size();
+		for (size_t i = 0; i < n; i++) {
+			for (size_t j = i; j < n; j++) {
+				if (adjacencyMatrix[i][j]) {
+					add({values[i], values[j]});
+				}
+			}
+		}
+	}
+
+	graph(const vector<T>& values, const vector<unordered_set<T>>& adjacencyList) {
+		size_t n = adjacencyList.size();
+		for (size_t i = 0; i < n; i++) {
+			edgeList[values[i]] = adjacencyList[i];
 		}
 	}
 
@@ -58,7 +74,7 @@ public:
 		return doesVertexExist(vertex);
 	}
 
-	bool connected() const override {
+	bool is_connected() const override {
 		if (edgeList.empty()) {
 			return false;
 		}
