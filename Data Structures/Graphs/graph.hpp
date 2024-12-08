@@ -58,6 +58,28 @@ public:
 		return doesVertexExist(vertex);
 	}
 
+	bool connected() const override {
+		if (edgeList.empty()) {
+			return false;
+		}
+		auto vertex = *(edgeList.begin());
+		unordered_set<T> visited;
+		queue<const unordered_set<T>*> q;
+		visited.insert(vertex.first);
+		q.push(&vertex.second);
+		while (q.size()) {
+			auto& connectedVertexes = *(q.front());
+			for (auto& connectedVertex : connectedVertexes) {
+				if (visited.find(connectedVertex) == visited.end()) {
+					visited.insert(connectedVertex);
+					q.push(&edgeList.at(connectedVertex));
+				}
+			}
+			q.pop();
+		}
+		return visited.size() == edgeList.size();
+	}
+
 	size_t path(const T& startVertex, const T& endVertex) const override {
 		if (!doesVertexExist(startVertex) || !doesVertexExist(endVertex)) {
 			return 0;
