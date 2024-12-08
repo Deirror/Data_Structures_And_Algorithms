@@ -27,13 +27,12 @@ public:
 		edgeList[edge.second].insert(edge.first);
 	}
 
-	void add(const T& vertex) override{
+	void add(const T& vertex) override {
 		edgeList[vertex];
 	}
 
 	void remove(const pair<T, T>& edge) override {
-		if (edgeList.find(edge.first) == edgeList.end() ||
-			edgeList.find(edge.second) == edgeList.end()) {
+		if (!doesEdgeExist(edge)) {
 			return;
 		}
 		edgeList[edge.second].erase(edge.first);
@@ -41,40 +40,41 @@ public:
 	}
 
 	void remove(const T& vertex) override {
-		auto vertexInfo = edgeList.find(vertex);
-		if (vertexInfo == edgeList.end()) {
+		if (!doesVertexExist(vertex)) {
 			return;
 		}
-		auto& connectedVertexes = (*vertexInfo).second;
+		auto& connectedVertexes = edgeList[vertex];
 		for (auto& connectedVertex : connectedVertexes) {
 			edgeList[connectedVertex].erase(vertex);
 		}
 		edgeList.erase(vertex);
 	}
 
-	bool contains(const T& vertex) override {
-		return edgeList.find(vertex) != edgeList.end();
+	bool contains(const pair<T, T>& edge) const override {
+		return doesEdgeExist(edge);
 	}
 
-	size_t path(const T& startVertex, const T& endVertex) override {
-		auto startVertexInfo = edgeList.find(startVertex);
-		auto endVertexInfo = edgeList.find(endVertex);
-		if (startVertexInfo == edgeList.end() || endVertexInfo == edgeList.end()) {
+	bool contains(const T& vertex) const override {
+		return doesVertexExist(vertex);
+	}
+
+	size_t path(const T& startVertex, const T& endVertex) const override {
+		if (!doesVertexExist(startVertex) || !doesVertexExist(endVertex)) {
 			return 0;
 		}
 		unordered_map<T, size_t> visited;
-		queue<pair<T, unordered_set<T>>> q;
+		queue<unordered_map<T, unordered_set<T>>::const_iterator> q;
 		visited[startVertex] = 0;
-		q.push(*startVertexInfo);
+		q.push(edgeList.find(startVertex));
 		while (q.size()) {
-			auto& connectedVertexes = q.front();
+			auto& connectedVertexes = *(q.front());
 			for (auto& connectedVertex : connectedVertexes.second) {
 				if (connectedVertex == endVertex) {
 					return visited[connectedVertexes.first] + 1;
 				}
 				if (visited.find(connectedVertex) == visited.end()) {
 					visited[connectedVertex] = visited[connectedVertexes.first] + 1;
-					q.push({ connectedVertex, edgeList[connectedVertex] });
+					q.push(edgeList.find(connectedVertex));
 				}
 			}
 			q.pop();
@@ -83,5 +83,13 @@ public:
 	}
 
 private:
+	bool doesEdgeExist(const pair<T, T>& edge) const {
+		return doesVertexExist(edge.first) && doesVertexExist(edge.second);
+	}
+
+	bool doesVertexExist(const T& vertex) const {
+		return edgeList.find(vertex) != edgeList.end();
+	}
+
 	unordered_map<T, unordered_set<T>> edgeList;
 };
