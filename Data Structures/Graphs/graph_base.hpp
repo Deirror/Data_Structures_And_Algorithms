@@ -17,5 +17,7 @@ public:
 
 	virtual bool is_connected() const = 0;
 
+	virtual bool has_cycle() const = 0;
+
 	virtual size_t path(const T& startVertex, const T& endVertex) const = 0;
 };
