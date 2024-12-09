@@ -19,20 +19,20 @@ int main() {
         int n, m;
         cin >> n >> m;
         unordered_map<int, unordered_set<int>> fg;
-        unordered_set<int> av;
         int x, y;
+        for(int i = 1; i <= n; i++) {
+            fg[i] = unordered_set<int>();
+        }
         for(int i = 0; i < m; i++) {
             cin >> x >> y;
             fg[x].insert(y);
             fg[y].insert(x);
-            av.insert(x);
-            av.insert(y);
         }
         unordered_map<int, unordered_set<int>> eg;
         for(auto& kvp : fg) {
-            for(auto& v : av) {
-                if(kvp.second.find(v) == (kvp.second).end() && v != kvp.first) {
-                    eg[kvp.first].insert(v);
+            for(int i = 1; i <= n; i++) {
+                if(kvp.second.find(i) == (kvp.second).end() && i != kvp.first) {
+                    eg[kvp.first].insert(i);
                 }      
             }
         }
@@ -61,7 +61,7 @@ int main() {
         }
         for(int i = 1; i <= n; i++) {
             if(pathLens[i] != -1) {
-                cout << pathLens[i] << ' ';
+               cout << pathLens[i] << ' ';
             }
         }
         cout << '\n';
